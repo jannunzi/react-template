@@ -39,9 +39,9 @@ const SessionAttributes = () => {
             value={serverUrl}/>
           <datalist id="server-url">
             <option
-              value="https://spring-template-jga.herokuapp.com"/>
+              value="http://spring-template-jga.herokuapp.com"/>
             <option
-              value="https://node-template-jga.herokuapp.com"/>
+              value="http://node-template-jga.herokuapp.com"/>
           </datalist>
         </div>
       </div>
