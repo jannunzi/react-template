@@ -11,12 +11,16 @@ const SessionAttributes = () => {
   const [serverUrl, setServerUrl] = useState("")
 
   const setSessionAttributeInServer = (attribute, value) => {
-    fetch(`${serverUrl}/session/set/${attribute}/${value}`)
+    fetch(`${serverUrl}/session/set/${attribute}/${value}`, {
+      credentials: "include"
+    })
       .then(response => response.text())
       .then(text => console.log(text))
   }
   const getSessionAttributeFromServer = (attribute) => {
-    fetch(`${serverUrl}/session/get/${attribute}`)
+    fetch(`${serverUrl}/session/get/${attribute}`, {
+      credentials: "include"
+    })
       .then(response => response.text())
       .then(text => setValue2(text))
   }
