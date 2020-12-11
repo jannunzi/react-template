@@ -8,13 +8,15 @@ const SessionAttributes = () => {
   const [attribute2, setAttribute2] = useState("")
   const [value2, setValue2] = useState("")
 
+  const [serverUrl, setServerUrl] = useState("")
+
   const setSessionAttributeInServer = (attribute, value) => {
-    fetch(`https://spring-template-jga.herokuapp.com/session/set/${attribute}/${value}`)
+    fetch(`${serverUrl}/session/set/${attribute}/${value}`)
       .then(response => response.text())
       .then(text => console.log(text))
   }
   const getSessionAttributeFromServer = (attribute) => {
-    fetch(`https://spring-template-jga.herokuapp.com/session/get/${attribute}`)
+    fetch(`${serverUrl}/session/get/${attribute}`)
       .then(response => response.text())
       .then(text => setValue2(text))
   }
@@ -22,6 +24,24 @@ const SessionAttributes = () => {
   return(
     <div>
       <h1>Session Attributes</h1>
+      <hr/>
+      <h2>Server URL</h2>
+      <div className="row">
+        <div className="col-12">
+          <input
+            list="server-url"
+            className="form-control"
+            onChange={(event) => setServerUrl(event.target.value)}
+            value={serverUrl}/>
+          <datalist id="server-url">
+            <option
+              value="https://spring-template-jga.herokuapp.com"/>
+            <option
+              value="https://node-template-jga.herokuapp.com"/>
+          </datalist>
+        </div>
+      </div>
+      <hr/>
       <h2>Set Attribute</h2>
       <div className="row">
         <div className="col-5">
@@ -44,7 +64,7 @@ const SessionAttributes = () => {
           </button>
         </div>
       </div>
-
+      <hr/>
       <h2>Get Attribute</h2>
       <div className="row">
         <div className="col-5">
