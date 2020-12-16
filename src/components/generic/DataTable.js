@@ -104,7 +104,7 @@ export default function DataTable(
                       editing === row[primaryKey] &&
                       <span>
                         {
-                          column.type === String && !column.enum &&
+                          column.type === String && !column.oneOf && !column.anyOf &&
                           <input
                             onChange={(event) => {
                               const value = event.target.value
@@ -118,25 +118,97 @@ export default function DataTable(
                             className="form-control"/>
                         }
                         {
-                          column.type === String && column.enum &&
-                            <select
-                              onChange={(event) => {
-                                const value = event.target.value
-                                setEditingRow(prevRow => {
-                                  let newRow = {...prevRow}
-                                  newRow[column.name] = value
-                                  return newRow
-                                })
-                              }}
-                              value={editingRow[column.name]}
-                              className="form-control">
-                              <option></option>
-                              {
-                                column.enum.map(option =>
-                                  <option key={option}>{option}</option>
-                                )
-                              }
-                            </select>
+                          column.type === String &&
+                          column.oneOf &&
+                          column.widget === "select" &&
+                          <select
+                            onChange={(event) => {
+                              const value = event.target.value
+                              setEditingRow(prevRow => {
+                                let newRow = {...prevRow}
+                                newRow[column.name] = value
+                                return newRow
+                              })
+                            }}
+                            value={editingRow[column.name]}
+                            className="form-control">
+                            <option></option>
+                            {
+                              column.oneOf.map(option =>
+                                <option key={option}>{option}</option>
+                              )
+                            }
+                          </select>
+                        }
+                        {
+                          column.type === String &&
+                          column.oneOf &&
+                          column.widget === "radio" &&
+                          <ul className="list-group">
+                            {
+                              column.oneOf.map(option =>
+                                <li key={option} className="list-group-item">
+                                  <label>
+                                    <input
+                                      onChange={(event) => {
+                                        const checked = event.target.checked
+                                        setEditingRow(prevRow => {
+                                          let newRow = {...prevRow}
+                                          newRow[column.name] = option
+                                          return newRow
+                                        })
+                                      }}
+                                      type="radio"
+                                      checked={editingRow[column.name] === option}
+                                      name={column.name}/>{option}
+                                  </label>
+                                </li>
+                              )
+                            }
+                          </ul>
+                        }
+                        {
+                          column.type === String &&
+                          column.anyOf &&
+                          column.widget === "checkbox" &&
+                          <ul className="list-group">
+                            {
+                              column.anyOf.map(option =>
+                                <li key={option} className="list-group-item">
+                                  <label>
+                                    <input
+                                      onChange={(event) => {
+                                        const checked = event.target.checked
+                                        setEditingRow(prevRow => {
+                                          let newRow = {...prevRow}
+                                          if(!newRow[column.name]) {
+                                            newRow[column.name] = [option]
+                                          } else {
+                                            debugger
+                                            const index = newRow[column.name].indexOf(option)
+                                            if(checked && index >= 0) {
+                                              // newRow[column.name] = newRow[column.name].splice(index, 1)
+                                            } else if(checked && index < 0) {
+                                              newRow[column.name].push(option)
+                                            } else if(!checked && index >= 0) {
+                                              newRow[column.name] = newRow[column.name].splice(index, 1)
+                                            }
+                                            // newRow[column.name] = column.anyOf.map(o => {
+                                            //   debugger
+                                            //   return o === option && checked ? option : null
+                                            // })
+                                          }
+                                          return newRow
+                                        })
+                                      }}
+                                      type="checkbox"
+                                      checked={editingRow[column.name] && editingRow[column.name].indexOf(option) >= 0}
+                                      name={column.name}/>{option}
+                                  </label>
+                                </li>
+                              )
+                            }
+                          </ul>
                         }
                         {
                           column.type === Date &&
@@ -168,6 +240,21 @@ export default function DataTable(
                             value={editingRow[column.name]}
                             className="form-control"/>
                         }
+                        {
+                          column.type === Boolean &&
+                          <input
+                            type="checkbox"
+                            onChange={(event) => {
+                              const checked = event.target.checked
+                              setEditingRow(prevRow => {
+                                let newRow = {...prevRow}
+                                newRow[column.name] = checked
+                                return newRow
+                              })
+                            }}
+                            checked={editingRow[column.name]}
+                            className="form-control"/>
+                        }
                       </span>
                     }
                     {
@@ -176,7 +263,28 @@ export default function DataTable(
                         {
                           detailLink &&
                             <Link to={`${detailLink.replace(":id",row[primaryKey])}`}>
-                              {row[column.name]}
+                              {
+                                column.type === Boolean &&
+                                JSON.stringify(row[column.name])
+                              }
+                              {
+                              column.type !== Boolean &&
+                                <span>
+                                  {
+                                    column.type === String &&
+                                    <span>
+                                      {
+                                        column.anyOf &&
+                                        row[column.name] && row[column.name].join(",")
+                                      }
+                                      {
+                                        !column.anyOf &&
+                                        row[column.name]
+                                      }
+                                    </span>
+                                  }
+                                </span>
+                              }
                             </Link>
                         }
                         {

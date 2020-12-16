@@ -37,7 +37,9 @@ function App() {
                   {name: "title",type: String,label:"Title", default: "New Course"},
                   {name: "startDate",type:Date,label:"Start Date"},
                   {name: "seats",type:Number,label:"Seats"},
-                  {name: "semester",type:String,enum:["Fall", "Summer", "Spring"],label:"Semester"}
+                  {name: "full",type:Boolean,label:"Full"},
+                  {name: "semester",type:String,oneOf:["Fall", "Summer", "Spring"],widget:"radio",label:"Semester"},
+                  {name: "topics",type:String,anyOf:["HTML", "JavaScript", "CSS"],widget:"checkbox",label:"Topics"},
                 ]}
                 detailLink="/generic/courses/:id"
                 defaultRecord={{title: "New Course"}}
