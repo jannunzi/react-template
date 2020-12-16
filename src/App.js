@@ -34,11 +34,13 @@ function App() {
                 primaryKey="_id"
                 schema={[
                   {name: "_id", type: String,label:"ID"},
+                  {name: "description", type: String, label:"Description", widget:"textarea"},
                   {name: "title",type: String,label:"Title", default: "New Course"},
                   {name: "startDate",type:Date,label:"Start Date"},
                   {name: "seats",type:Number,label:"Seats"},
                   {name: "full",type:Boolean,label:"Full"},
                   {name: "semester",type:String,oneOf:["Fall", "Summer", "Spring"],widget:"radio",label:"Semester"},
+                  {name: "gradYear",type:String,oneOf:[2021, 2022, 2023],widget:"select",label:"Graduation Year"},
                   {name: "topics",type:String,anyOf:["HTML", "JavaScript", "CSS"],widget:"checkbox",label:"Topics"},
                 ]}
                 detailLink="/generic/courses/:id"
@@ -68,10 +70,14 @@ function App() {
                 cancelLink="/generic/courses"
                 schema={[
                   {name: "_id", type: String,label:"ID"},
+                  {name: "description", type: String, label:"Description", widget:"textarea"},
                   {name: "title",type: String,label:"Title", default: "New Course"},
                   {name: "startDate",type:Date,label:"Start Date"},
                   {name: "seats",type:Number,label:"Seats"},
-                  {name: "semester",type:String,enum:["Fall", "Summer", "Spring"],label:"Semester"}
+                  {name: "full",type:Boolean,label:"Full"},
+                  {name: "semester",type:String,oneOf:["Fall", "Summer", "Spring"],widget:"radio",label:"Semester"},
+                  {name: "gradYear",type:String,oneOf:[2021, 2022, 2023],widget:"select",label:"Graduation Year"},
+                  {name: "topics",type:String,anyOf:["HTML", "JavaScript", "CSS"],widget:"checkbox",label:"Topics"},
                 ]}
                 table={{name:"courses", label:"Course"}}/>
             </Route>

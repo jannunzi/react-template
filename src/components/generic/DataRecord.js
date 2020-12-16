@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
+import DataField from "./DataField";
 
 export const DataRecord = (
   {
@@ -63,71 +64,15 @@ export const DataRecord = (
                   {field.label}
                 </div>
                 <div className="col-10">
-                    {
-                      field.type === String && !field.enum &&
-                      <input
-                        onChange={(event) => {
-                          const value = event.target.value
-                          setRecord(prevRow => {
-                            let newRow = {...prevRow}
-                            newRow[field.name] = value
-                            return newRow
-                          })
-                        }}
-                        value={record[field.name]}
-                        className="form-control"/>
-                    }
-                    {
-                      field.type === String && field.enum &&
-                      <select
-                        onChange={(event) => {
-                          const value = event.target.value
-                          setRecord(prevRow => {
-                            let newRow = {...prevRow}
-                            newRow[field.name] = value
-                            return newRow
-                          })
-                        }}
-                        value={record[field.name]}
-                        className="form-control">
-                        <option></option>
-                        {
-                          field.enum.map(option =>
-                            <option key={option}>{option}</option>
-                          )
-                        }
-                      </select>
-                    }
-                    {
-                      field.type === Date &&
-                      <input
-                        onChange={(event) => {
-                          const value = event.target.value
-                          setRecord(prevRow => {
-                            let newRow = {...prevRow}
-                            newRow[field.name] = value
-                            return newRow
-                          })
-                        }}
-                        type="Date"
-                        value={record[field.name]}
-                        className="form-control"/>
-                    }
-                    {
-                      field.type === Number &&
-                      <input
-                        onChange={(event) => {
-                          const value = event.target.value
-                          setRecord(prevRow => {
-                            let newRow = {...prevRow}
-                            newRow[field.name] = value
-                            return newRow
-                          })
-                        }}
-                        type="Number"
-                        value={record[field.name]}
-                        className="form-control"/>
-                    }
+                  <DataField
+                    editing={record[primaryKey]}
+                    row={record}
+                    column={field}
+                    detailLink={null}
+                    editingRow={record}
+                    primaryKey={primaryKey}
+                    setEditingRow={setRecord}
+                  />
                 </div>
               </div>
             </li>
